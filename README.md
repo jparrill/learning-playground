@@ -66,6 +66,7 @@ cp skills/understand/variants/claude.md ~/.claude/skills/understand/SKILL.md
 
 # Shared (both read from here)
 cp -r skills/* ~/.agents/skills/
+rm -rf ~/.agents/skills/understand/variants
 # Then copy the variant for your CLI:
 cp skills/understand/variants/pi.md ~/.agents/skills/understand/SKILL.md    # Pi
 cp skills/understand/variants/claude.md ~/.agents/skills/understand/SKILL.md # Claude Code
