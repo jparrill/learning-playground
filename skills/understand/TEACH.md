@@ -53,10 +53,15 @@ area — create an SVG illustration and save it to `assets/<nn>-<slug>.svg`.
 Do not illustrate the non-geometric. A diagram of an abstract definition is decoration and
 costs attention.
 
-### 7. Quiz gate — free-text only
+### 7. Quiz gate — free-text only, mandatory stop
 
 Ask one or two open questions in chat, on **this step only**, and let the user answer in
 their own words.
+
+**The quiz question MUST be the last thing in your message.** Write nothing after it. Do not
+continue teaching. Do not start the next node. STOP and wait for the user's reply. This is
+the single most important instruction for long sessions — models drift into lecturing mode
+and skip quiz gates entirely. The gate exists to prevent exactly that.
 
 **Never use `AskUserQuestion` in this phase.** Multiple choice is banned here because
 options let a learner recognise an answer they could not have generated — Brain A passes,

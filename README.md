@@ -63,6 +63,17 @@ cp -r skills/* ~/.claude/skills/
 cp -r skills/* ~/.agents/skills/
 ```
 
+## Setup
+
+Run `/setup-learning-playground` before your first session. It asks which CLI you use (Pi or
+Claude Code) and copies the right skill variant:
+
+- **Pi variant** — uses `md-log` for auto-logging and `ask-user` for structured probes
+- **Claude Code variant** — manual Write/Edit logging with explicit quiz gate stops to prevent
+  drift in long sessions
+
+Without setup, the default `SKILL.md` includes both paths with conditional logic.
+
 ## How it works
 
 When you run `/understand`, the skill:
@@ -162,14 +173,17 @@ See [DOCTRINE.md](skills/understand/DOCTRINE.md) for the full learning philosoph
 ```
 skills/
   understand/
-    SKILL.md       # Main skill — the onboarding flow and phase orchestration
+    SKILL.md       # Main skill (default with conditionals, works without setup)
     DOCTRINE.md    # The 7 learning rules (read this to understand the philosophy)
     PROBE.md       # Phase 1 protocol — locating the knowledge edge
     PLAN.md        # Phase 2 protocol — building the motivated DAG
     TEACH.md       # Phase 3 protocol — the step contract and quiz gates
     FORMATS.md     # File schemas for _map.md, _plan.md, logs, references
+    variants/
+      pi.md        # Clean Pi variant (md-log + ask-user, no conditionals)
+      claude.md    # Clean Claude Code variant (manual logging, explicit stops)
   setup-learning-playground/
-    SKILL.md       # Environment setup — installs dependencies for Pi or Claude Code
+    SKILL.md       # Environment setup — asks CLI, copies the right variant
 examples/
   ai-concepts/     # Example domain with _map.md and _plan.md from a real session
 ```

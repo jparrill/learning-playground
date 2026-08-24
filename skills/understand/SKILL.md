@@ -54,6 +54,51 @@ These are not style preferences. Breaking any of them defeats the system.
 8. **Absorb all logistics.** Planning, sourcing, verification, ordering, note-keeping,
    visuals — yours. The user's only job is to think about the material.
 
+## Environment detection
+
+This skill works on both Pi and Claude Code. Detect which environment you are in **once** at
+session start and adapt accordingly:
+
+### Logging (md-log replacement)
+
+- **Pi with pi-md-log**: activate `/md-log <log-path>`. The extension auto-logs every
+  assistant message to the file. You get logging for free.
+- **Claude Code / Pi without md-log**: there is no auto-logger. You must **manually append**
+  to the log file using Write/Edit tools. Write after each of these events:
+  1. Each probe question and the user's answer
+  2. Each teaching step (tension, move, definition, anchor, quiz)
+  3. Each quiz gate result (pass/fail)
+  4. Each plan change or session boundary note
+
+  Format: use the same markdown structure md-log would produce — `## heading` per step,
+  fenced code blocks for code/math, mermaid blocks for diagrams.
+
+### Structured questions and quiz gates (ask-user replacement)
+
+- **Pi with pi-ask-user**: use structured questionnaire format for quiz gates and probes.
+- **Claude Code**: use the `AskUserQuestion` tool for **all quiz gates** — this is mandatory,
+  not optional. The tool mechanically forces the model to stop and wait for the user's answer.
+  Without it, long sessions cause the model to drift into lecturing mode and skip quiz gates.
+  Also use it for logistical choices (workspace path, domain). For open-ended probe questions
+  during Phase 1, ask directly in conversation — free-text answers are better for probing.
+- **Either without extensions**: ask directly in conversation text. End the message immediately
+  after the question — write NOTHING after the quiz question. Wait for the user's next message.
+
+**Why this matters:** In long sessions, models lose adherence to interactive protocols. They
+stop asking and start dumping. The `AskUserQuestion` tool (Claude Code) and `ask-user` (Pi)
+are mechanical gates — the model physically cannot continue until the user responds. This is
+the only reliable way to preserve quiz gate behavior across session drift and context
+compaction.
+
+### Summary
+
+| Capability | Pi + extensions | Pi bare | Claude Code |
+|-----------|----------------|---------|-------------|
+| Session logging | `/md-log` (auto) | Write/Edit (manual) | Write/Edit (manual) |
+| Structured questions | `ask-user` | conversation | `AskUserQuestion` tool |
+| File operations | Write/Edit | Write/Edit | Write/Edit |
+| Web verification | `web-access` | Bash `curl` | `WebFetch` / Bash `curl` |
+
 ## Phase 0 — Bind
 
 This is the onboarding flow. It runs once per session and sets up everything the user needs.
@@ -97,15 +142,10 @@ Store the resolved workspace path — all subsequent file operations use it.
 ### Step 0.3 — Set up the session log
 
 1. Create the log file: `<workspace>/<domain>/logs/YYYY-MM-DD-<topic-slug>.md`
-2. **If `/md-log` is available** (Pi with pi-md-log extension): activate it pointing to the
-   log file:
-   ```
-   /md-log <workspace>/<domain>/logs/YYYY-MM-DD-<topic-slug>.md
-   ```
-3. **If `/md-log` is NOT available** (Claude Code, or Pi without md-log): write to the log
-   file directly using the Write/Edit tools throughout the session. Every teaching step,
-   probe question, and quiz gate gets written to the log as it happens.
-4. **Print the log path** and tell the user to open it in Obsidian or their markdown viewer —
+2. Activate logging per the **Environment detection** section above:
+   - Pi + md-log: `/md-log <log-path>`
+   - Otherwise: manual Write/Edit after each teaching event
+3. **Print the log path** and tell the user to open it in Obsidian or their markdown viewer —
    that note is the real reading surface. LaTeX, mermaid and SVG render there; the terminal
    cannot show any of them.
 
@@ -149,8 +189,8 @@ terminal. **Never defer a write to "session close".** Instead:
 2. **`_map.md`** — update it **after every quiz gate** (not at session close). Each passed
    node gets moved to Locked immediately. Each failed node gets marked Shaky immediately.
 3. **Reference notes** — write/update at each compression checkpoint, as before.
-4. **Log** — if `md-log` is active, the live log is written automatically. If not, write to
-   the log file directly using Write/Edit tools after each teaching step.
+4. **Log** — per **Environment detection**: md-log handles this automatically; without it,
+   write to the log file using Write/Edit after each teaching step.
 
 ### Never-overwrite rule
 
