@@ -28,11 +28,8 @@ informational compression.
 ### Pi (recommended)
 
 ```bash
-# Install the package
+# Install everything (skills + extensions) in one command
 pi install git:github.com/jparrill/learning-playground
-
-# Run setup (installs md-log and ask-user extensions)
-/setup-learning-playground
 
 # Start learning
 /understand

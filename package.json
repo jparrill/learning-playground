@@ -8,5 +8,19 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/jparrill/learning-playground"
+  },
+  "type": "module",
+  "pi": {
+    "skills": [
+      "./skills/understand/SKILL.md",
+      "./skills/setup-learning-playground/SKILL.md"
+    ],
+    "extensions": [
+      "./extensions/pi-md-log/extensions/md-log.ts",
+      "./extensions/pi-ask-user/src/index.ts"
+    ]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
   }
 }
