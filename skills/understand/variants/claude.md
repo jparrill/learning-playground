@@ -1,7 +1,7 @@
 ---
 name: understand
 description: Build genuine structural understanding of a difficult topic. Probes the learner's exact edge, plans a motivated derivation path as a labelled DAG, then teaches one reasoning step at a time with quiz gates and compression checkpoints. Persists progress to disk after every step.
-argument-hint: "<topic> [--workspace <path>]"
+argument-hint: "[--path <workspace>] [--topic <topic>]"
 ---
 
 # `/understand`
@@ -59,6 +59,10 @@ writing to the log. Every teaching step MUST end with a Write/Edit to the log fi
 catch yourself having taught a step without writing it, write it NOW before doing anything
 else.
 
+**Digressions count as teaching.** If the user asks a question that leads to a substantive
+explanation (scaling laws, architecture details, tooling context), log it under a
+`### Digresión — <topic>` heading. If it was taught, it goes in the log — no exceptions.
+
 ## Quiz gates — mandatory stop
 
 Quiz questions are free-text (never multiple choice — see [TEACH.md](../TEACH.md)). But in
@@ -74,9 +78,21 @@ I wait for and grade the user's answer?" If no, you skipped a gate — go back.
 
 This is the onboarding flow. It runs once per session.
 
+### Arguments
+
+Parse the user's input for these flags:
+
+| Flag | Purpose | Default |
+|------|---------|---------|
+| `--path <dir>` | Workspace directory (contains domain folders) | ask the user |
+| `--topic <text>` | What to learn (starts a new domain) | ask the user |
+
+**`--path` and `--workspace` are aliases** — accept either. No `--model` flag (Claude Code
+does not support mid-session model switching).
+
 ### Step 0.1 — Resolve the workspace
 
-Parse the user's input for `--workspace <path>`. If provided, use that path. If not:
+If `--path` was provided, use that path. Otherwise:
 
 1. **Ask the user** where they want their learning workspace:
 
@@ -88,18 +104,35 @@ Parse the user's input for `--workspace <path>`. If provided, use that path. If 
    mkdir -p <workspace-path>
    ```
 
-### Step 0.2 — Resolve the domain
+### Step 0.2 — Evaluate workspace state and resolve mode
 
-1. If the user included a topic in their input, use it. Otherwise ask **one** question:
+Read the workspace directory. The mode depends on what's inside:
 
+**Case A — Resume (workspace has `_plan.md` or `_map.md`):**
+
+1. If `--topic` was also provided, **STOP and warn the user**:
+   > This workspace already contains a learning session for `<domain>`.
+   > To resume it, drop `--topic`. To start a new topic, use a different `--path`.
+   Do NOT proceed. Wait for the user to decide.
+
+2. If no `--topic`, read `_plan.md` and `_map.md`:
+   - Check for `pending_quiz:` in `_map.md` — if found, re-ask that exact question first.
+   - Find the first node with status `pending` or `in-progress` in `_plan.md`.
+   - Tell the user where you are picking up and go directly to Phase 3 (Teach).
+
+**Case B — New session (workspace is empty or does not exist):**
+
+1. Create the workspace if needed: `mkdir -p <path>`
+2. If `--topic` was provided, use it. Otherwise ask **one** question:
    > What do you want to understand?
-
-2. Convert to kebab-case domain name. Create the folder structure:
+3. Convert to kebab-case domain name. Create the folder structure:
    ```bash
    mkdir -p <workspace>/<domain>/logs
    mkdir -p <workspace>/<domain>/reference
    mkdir -p <workspace>/<domain>/assets
    ```
+4. Ask what understanding they are aiming at, and why. Record as `goal:`.
+5. Proceed to Phase 1 (Probe).
 
 ### Step 0.3 — Set up the session log
 
@@ -115,14 +148,10 @@ Parse the user's input for `--workspace <path>`. If provided, use that path. If 
    ```
 3. **Print the log path** and tell the user to open it in Obsidian or their markdown viewer.
 
-### Step 0.4 — Read existing state or set the goal
+### Step 0.4 — Read doctrine
 
 1. Read `DOCTRINE.md`.
-2. Read `<domain>/_map.md` if it exists.
-3. **Read `<domain>/_plan.md` if it exists.** If there is an existing plan with incomplete
-   nodes, resume from the first incomplete node. Go directly to Phase 3.
-4. If new domain, ask **one** question: what understanding are they aiming at, and why?
-   Then proceed to Phase 1.
+2. If resuming (Case A), also skim other domains' maps for transferable locked items.
 
 ## Workspace
 

@@ -1,7 +1,7 @@
 ---
 name: understand
 description: Build genuine structural understanding of a difficult topic. Probes the learner's exact edge, plans a motivated derivation path as a labelled DAG, then teaches one reasoning step at a time with quiz gates and compression checkpoints. Persists progress to disk after every step.
-argument-hint: "<topic> [--workspace <path>]"
+argument-hint: "[--path <workspace>] [--topic <topic>] [--model <model>]"
 ---
 
 # `/understand`
@@ -104,9 +104,21 @@ compaction.
 This is the onboarding flow. It runs once per session and sets up everything the user needs.
 The user's only job is to answer questions — you handle the rest.
 
+### Arguments
+
+Parse the user's input for these flags:
+
+| Flag | Purpose | Default |
+|------|---------|---------|
+| `--path <dir>` | Workspace directory (contains domain folders) | ask the user |
+| `--topic <text>` | What to learn (starts a new domain) | ask the user |
+| `--model <name>` | Model to use for this session | keep current model |
+
+**`--path` and `--workspace` are aliases** — accept either.
+
 ### Step 0.1 — Resolve the workspace
 
-Parse the user's input for `--workspace <path>`. If provided, use that path. If not:
+If `--path` was provided, use that path. Otherwise:
 
 1. **Ask the user** where they want their learning workspace. Suggest a sensible default
    based on the current directory or a common location (e.g., `./learn/`, `~/learn/`,
@@ -122,24 +134,48 @@ Parse the user's input for `--workspace <path>`. If provided, use that path. If 
 
 Store the resolved workspace path — all subsequent file operations use it.
 
-### Step 0.2 — Resolve the domain
+### Step 0.2 — Evaluate workspace state and resolve mode
 
-1. If the user included a topic in their input (e.g., `/understand quantum mechanics`), use
-   it. Otherwise ask **one** question:
+Read the workspace directory. The mode depends on what's inside:
 
+**Case A — Resume (workspace has `_plan.md` or `_map.md`):**
+The workspace contains an existing learning session. Read the files and resume.
+
+1. If `--topic` was also provided, **STOP and warn the user**:
+   > This workspace already contains a learning session for `<domain>`.
+   > To resume it, drop `--topic`. To start a new topic, use a different `--path`.
+   Do NOT proceed. Wait for the user to decide.
+
+2. If no `--topic`, read `_plan.md` and `_map.md`:
+   - Check for `pending_quiz:` in `_map.md` — if found, re-ask that exact question first.
+   - Find the first node with status `pending` or `in-progress` in `_plan.md`.
+   - Tell the user where you are picking up and go directly to Phase 3 (Teach).
+
+**Case B — New session (workspace is empty or does not exist):**
+No existing state. Start from scratch.
+
+1. Create the workspace if it does not exist: `mkdir -p <path>`
+2. If `--topic` was provided, use it. Otherwise ask **one** question:
    > What do you want to understand?
-
-2. Convert the topic into a stable kebab-case domain name (e.g., `quantum-mechanics`,
+3. Convert the topic into a stable kebab-case domain name (e.g., `quantum-mechanics`,
    `rust-ownership`, `llm-inference`). This becomes the folder name.
-
-3. Create the domain folder structure:
+4. Create the domain folder structure:
    ```bash
    mkdir -p <workspace>/<domain>/logs
    mkdir -p <workspace>/<domain>/reference
    mkdir -p <workspace>/<domain>/assets
    ```
+5. Ask **one** question: what understanding are they aiming at, and why does it matter to
+   them? Record it as `goal:` in the log frontmatter.
+6. Proceed to Phase 1 (Probe).
 
-### Step 0.3 — Set up the session log
+### Step 0.3 — Model override
+
+If `--model` was provided:
+- **Pi**: switch to that model (if the model is not available, warn and continue with current)
+- **Claude Code**: ignore (Claude Code does not support mid-session model switching)
+
+### Step 0.4 — Set up the session log
 
 1. Create the log file: `<workspace>/<domain>/logs/YYYY-MM-DD-<topic-slug>.md`
 2. Activate logging per the **Environment detection** section above:
@@ -149,17 +185,10 @@ Store the resolved workspace path — all subsequent file operations use it.
    that note is the real reading surface. LaTeX, mermaid and SVG render there; the terminal
    cannot show any of them.
 
-### Step 0.4 — Read existing state or set the goal
+### Step 0.5 — Read doctrine
 
 1. Read `DOCTRINE.md` (this skill's file).
-2. Read `<domain>/_map.md` if it exists. Also skim other domains' maps for transferable
-   locked items.
-3. **Read `<domain>/_plan.md` if it exists.** If there is an existing plan with incomplete
-   nodes, **do not re-plan**. Resume from the first incomplete node. Tell the user where you
-   are picking up and go directly to Phase 3 (Teach).
-4. If this is a new domain (no `_map.md` or `_plan.md`), ask **one** question: what
-   understanding are they aiming at, and why does it matter to them? Record it as `goal:` in
-   the log frontmatter. Then proceed to Phase 1 (Probe).
+2. If resuming (Case A), also skim other domains' maps for transferable locked items.
 
 ## Workspace
 

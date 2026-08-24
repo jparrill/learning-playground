@@ -134,8 +134,12 @@ symbol said out loud the first time it appears.
 - **Never look ahead.** No "we will see later that…" teasers.
 - **Never batch quizzes.** Gate each step.
 - **Answer interruptions fully, then resume the same node.**
-- Write each step to the live log as it is produced, in the callouts above — the user reads
-  Obsidian, not the terminal. Cap it at ~3 callouts per rung.
+- **Write each step to the live log as it is produced.** This is non-negotiable. Before
+  answering the user or moving to the next interaction, verify: "Did I write this to the
+  log?" If not, write it NOW. This includes digressions, supplementary explanations, and
+  user questions — if it was taught, it goes in the log. Models drift and stop logging in
+  long sessions; this instruction exists to prevent exactly that. Cap it at ~3 callouts per
+  rung, but digressions get their own `### Digresión — <topic>` section.
 
 ## Compression checkpoint
 
