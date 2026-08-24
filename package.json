@@ -1,0 +1,12 @@
+{
+  "name": "learning-playground",
+  "version": "1.0.0",
+  "description": "Structured learning skill for AI coding agents — motivated derivation with DAG plans, quiz gates, and crash-safe persistence",
+  "keywords": ["pi-package"],
+  "license": "MIT",
+  "author": "Juan Manuel Parrilla Madrid",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jparrill/learning-playground"
+  }
+}
