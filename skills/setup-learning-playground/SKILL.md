@@ -22,44 +22,56 @@ If `--pi` or `--claude` was passed, use that. Otherwise ask the user:
 
 ### 2a. Pi setup
 
-Install required extensions:
+Extensions are bundled in this repo. Install everything with:
 
 ```bash
-pi install git:github.com/kanker2/pi-md-log
-pi install git:github.com/kanker2/pi-ask-user
+make install-pi
 ```
 
-Verify installation:
+If `make` is not available (e.g., running from within Pi), copy manually:
 
 ```bash
-pi list
-```
+# Skills
+mkdir -p ~/.pi/agent/skills/understand ~/.pi/agent/skills/setup-learning-playground
+cp skills/understand/variants/pi.md ~/.pi/agent/skills/understand/SKILL.md
+cp skills/understand/DOCTRINE.md skills/understand/PROBE.md skills/understand/PLAN.md skills/understand/TEACH.md skills/understand/FORMATS.md ~/.pi/agent/skills/understand/
 
-Then copy the Pi variant of the skill:
-
-```bash
-cp skills/understand/variants/pi.md skills/understand/SKILL.md
+# Extensions
+mkdir -p ~/.pi/agent/git/github.com/jparrill/pi-md-log/extensions
+cp extensions/pi-md-log/package.json extensions/pi-md-log/LICENSE extensions/pi-md-log/README.md ~/.pi/agent/git/github.com/jparrill/pi-md-log/
+cp extensions/pi-md-log/extensions/md-log.ts ~/.pi/agent/git/github.com/jparrill/pi-md-log/extensions/
+mkdir -p ~/.pi/agent/git/github.com/jparrill/pi-ask-user/src
+cp extensions/pi-ask-user/package.json extensions/pi-ask-user/README.md ~/.pi/agent/git/github.com/jparrill/pi-ask-user/
+cp extensions/pi-ask-user/src/*.ts ~/.pi/agent/git/github.com/jparrill/pi-ask-user/src/
 ```
 
 Tell the user:
 
 > Setup complete for Pi.
 >
-> Extensions installed:
-> - **pi-md-log** by [@kanker2](https://github.com/kanker2) — auto-logs session content to markdown
-> - **pi-ask-user** by [@kanker2](https://github.com/kanker2) — structured questionnaires for probing
+> Extensions installed (bundled, originally by [@kanker2](https://github.com/kanker2)):
+> - **pi-md-log** — auto-logs session content to markdown
+> - **pi-ask-user** — structured questionnaires for probing
 >
 > Skill variant: **Pi** (auto-logging, extension-based quiz gates)
 >
-> Reload Pi with `/reload` or restart it.
+> Restart Pi or run `/reload` to activate.
 > To start learning: `/understand`
 
 ### 2b. Claude Code setup
 
-No extensions needed. Copy the Claude Code variant of the skill:
+No extensions needed. Install with:
 
 ```bash
-cp skills/understand/variants/claude.md skills/understand/SKILL.md
+make install-cc
+```
+
+Or manually:
+
+```bash
+mkdir -p ~/.claude/skills/understand ~/.claude/skills/setup-learning-playground
+cp skills/understand/variants/claude.md ~/.claude/skills/understand/SKILL.md
+cp skills/understand/DOCTRINE.md skills/understand/PROBE.md skills/understand/PLAN.md skills/understand/TEACH.md skills/understand/FORMATS.md ~/.claude/skills/understand/
 ```
 
 Tell the user:

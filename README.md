@@ -184,15 +184,20 @@ skills/
       pi.md        # Clean Pi variant (md-log + ask-user, no conditionals)
       claude.md    # Clean Claude Code variant (manual logging, explicit stops)
   setup-learning-playground/
-    SKILL.md       # Environment setup — asks CLI, copies the right variant
+    SKILL.md       # Environment setup — asks CLI, installs the right variant
+extensions/
+  pi-md-log/       # Vendored Pi extension — session auto-logger (MIT, by @kanker2)
+  pi-ask-user/     # Vendored Pi extension — structured questions (MIT, by @kanker2)
 examples/
   ai-concepts/     # Example domain with _map.md and _plan.md from a real session
 ```
 
 ## Acknowledgments
 
-- **[pi-md-log](https://github.com/kanker2/pi-md-log)** by [@kanker2](https://github.com/kanker2) — session logging extension for Pi that powers the live note-taking in `/understand`. The `/setup-learning-playground` skill installs it automatically.
-- **[pi-ask-user](https://github.com/kanker2/pi-ask-user)** by [@kanker2](https://github.com/kanker2) — structured questionnaire extension used during the probe phase.
+This repo bundles vendored copies of two Pi extensions, both MIT-licensed:
+
+- **[pi-md-log](https://github.com/kanker2/pi-md-log)** by [@kanker2](https://github.com/kanker2) — session logging extension for Pi that powers the live note-taking in `/understand`. Original source and copyright preserved in `extensions/pi-md-log/`.
+- **[pi-ask-user](https://github.com/kanker2/pi-ask-user)** by [@kanker2](https://github.com/kanker2) — structured questionnaire extension used during the probe phase. Original source and copyright preserved in `extensions/pi-ask-user/`.
 
 ## License
 

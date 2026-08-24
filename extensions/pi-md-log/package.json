@@ -1,0 +1,13 @@
+{
+  "name": "pi-md-log",
+  "version": "1.0.0",
+  "description": "Markdown session logger extension for pi",
+  "keywords": ["pi-package"],
+  "type": "module",
+  "pi": {
+    "extensions": ["./extensions/md-log.ts"]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  }
+}
