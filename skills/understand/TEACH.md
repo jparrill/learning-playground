@@ -63,6 +63,13 @@ continue teaching. Do not start the next node. STOP and wait for the user's repl
 the single most important instruction for long sessions — models drift into lecturing mode
 and skip quiz gates entirely. The gate exists to prevent exactly that.
 
+**Write the quiz question to the log AND to `_map.md` BEFORE stopping.** Add a
+`> [!question] Pending quiz — N<id>` callout to the log with the exact question text, and
+add a `pending_quiz:` field under the node in `_map.md`. This ensures that if the session
+crashes or the user resumes later, the exact same question is re-asked — not a new one
+generated from scratch. On resume, check `_map.md` for any `pending_quiz:` field first. If
+found, re-ask that exact question verbatim. Clear the field only after grading.
+
 **Never use `AskUserQuestion` in this phase.** Multiple choice is banned here because
 options let a learner recognise an answer they could not have generated — Brain A passes,
 and the gate measures nothing.

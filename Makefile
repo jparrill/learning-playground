@@ -1,7 +1,7 @@
 UNDERSTAND_DOCS := DOCTRINE.md PROBE.md PLAN.md TEACH.md FORMATS.md
 PI_GIT_DIR := ~/.pi/agent/git/github.com/jparrill
 
-.PHONY: install-pi install-cc
+.PHONY: install-pi install-cc test
 
 install-pi:
 	@# Skills
@@ -23,6 +23,9 @@ install-pi:
 	@echo "  ask-user -> $(PI_GIT_DIR)/pi-ask-user/"
 	@echo ""
 	@echo "Restart Pi or run /reload to activate."
+
+test:
+	./tests/run.sh $(ARGS)
 
 install-cc:
 	mkdir -p ~/.claude/skills/understand ~/.claude/skills/setup-learning-playground

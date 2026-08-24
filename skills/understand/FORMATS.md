@@ -78,6 +78,13 @@ graph LR
   classDef root fill:#2d4,stroke:#191
 ```
 
+## Pending quiz
+If a quiz was asked but not yet answered (session crashed, user paused), store it here.
+On resume, re-ask this exact question verbatim. Clear this section after grading.
+
+- node: N2
+- question: "$\\alpha = 3\\,dx - 2\\,dy$ and $v = (2,5)$. What is $\\alpha(v)$, and why did you not need a metric to compute it?"
+
 ## Next frontier
 - resume at: wedge product — construction from antisymmetrisation
 ```
