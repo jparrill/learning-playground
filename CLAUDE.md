@@ -5,7 +5,7 @@ Structured learning skill for AI coding agents (Pi, Claude Code).
 ## Structure
 
 - `skills/understand/` — the `/understand` skill and all its sub-documents
-- `skills/setup/` — environment setup skill for Pi and Claude Code
+- `skills/setup-learning-playground/` — environment setup skill for Pi and Claude Code
 - `examples/` — example domain workspaces from real sessions
 
 ## Standards

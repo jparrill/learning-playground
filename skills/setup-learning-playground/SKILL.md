@@ -1,10 +1,10 @@
 ---
-name: setup
+name: setup-learning-playground
 description: "Install learning-playground dependencies and configure Pi or Claude Code to use the /understand skill."
 argument-hint: "[--pi | --claude]"
 ---
 
-# `/setup`
+# `/setup-learning-playground`
 
 Configure your environment to use the `/understand` skill. Detects whether you are running
 Pi or Claude Code and installs the appropriate dependencies.

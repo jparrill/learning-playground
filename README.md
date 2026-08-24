@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://octodex.github.com/images/neurocats_FULL.png" width="400" alt="Neurocats — GitHub Octodex" />
+  <img src="assets/neurocats.png" width="400" alt="Neurocats — GitHub Octodex" />
 </p>
 
 # learning-playground
@@ -32,7 +32,7 @@ informational compression.
 pi install git:github.com/jparrill/learning-playground
 
 # Run setup (installs md-log and ask-user extensions)
-/setup
+/setup-learning-playground
 
 # Start learning
 /understand
@@ -168,7 +168,7 @@ skills/
     PLAN.md        # Phase 2 protocol — building the motivated DAG
     TEACH.md       # Phase 3 protocol — the step contract and quiz gates
     FORMATS.md     # File schemas for _map.md, _plan.md, logs, references
-  setup/
+  setup-learning-playground/
     SKILL.md       # Environment setup — installs dependencies for Pi or Claude Code
 examples/
   ai-concepts/     # Example domain with _map.md and _plan.md from a real session
@@ -176,7 +176,7 @@ examples/
 
 ## Acknowledgments
 
-- **[pi-md-log](https://github.com/kanker2/pi-md-log)** by [@kanker2](https://github.com/kanker2) — session logging extension for Pi that powers the live note-taking in `/understand`. The `/setup` skill installs it automatically.
+- **[pi-md-log](https://github.com/kanker2/pi-md-log)** by [@kanker2](https://github.com/kanker2) — session logging extension for Pi that powers the live note-taking in `/understand`. The `/setup-learning-playground` skill installs it automatically.
 - **[pi-ask-user](https://github.com/kanker2/pi-ask-user)** by [@kanker2](https://github.com/kanker2) — structured questionnaire extension used during the probe phase.
 
 ## License
