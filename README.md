@@ -31,8 +31,14 @@ informational compression.
 # Install everything (skills + extensions) in one command
 pi install git:github.com/jparrill/learning-playground
 
-# Start learning
-/understand
+# Start learning a new topic
+/understand --path ~/learn/quantum --topic "quantum computing basics"
+
+# Resume an existing session
+/understand --path ~/learn/quantum
+
+# Override model for this session
+/understand --path ~/learn/quantum --model Qwen3.6-35B-A3B-Q8_0.gguf
 ```
 
 ### Claude Code
@@ -45,7 +51,7 @@ claude plugin install github.com/jparrill/learning-playground
 /setup-learning-playground
 
 # Start learning
-/understand
+/understand --path ~/learn/rust-ownership --topic "Rust ownership and borrowing"
 ```
 
 ### Manual installation
@@ -59,6 +65,13 @@ make install-pi
 
 # Claude Code
 make install-cc
+```
+
+### Running tests
+
+```bash
+make test                                            # defaults: auriga-moe + Qwen3.6 MoE
+make test ARGS="--provider google --model gemini-2.5-pro"  # override provider/model
 ```
 
 ## Setup
@@ -84,10 +97,8 @@ When you run `/understand`, the skill:
 ### The flow
 
 ```
-/understand
-  │
-  ├─ "Where should I create the workspace?" → ~/learn/
-  ├─ "What do you want to understand?" → "How LLM inference works"
+# New session
+/understand --path ~/learn/llm-inference --topic "How LLM inference works"
   │
   ├─ Phase 1: Probe (locate your knowledge edge)
   │   └─ ~10 questions, binary search across strands
@@ -100,6 +111,13 @@ When you run `/understand`, the skill:
   │   └─ _map.md updated after EVERY quiz gate
   │
   └─ Session close (lightweight — everything already persisted)
+
+# Resume
+/understand --path ~/learn/llm-inference
+  │
+  ├─ Reads _plan.md + _map.md
+  ├─ Re-asks pending quiz if session crashed mid-question
+  └─ Resumes from first incomplete node
 ```
 
 ### Workspace structure
@@ -112,6 +130,17 @@ When you run `/understand`, the skill:
   reference/forward-pass.md        # compressed generators (shorter than log)
   assets/01-attention.svg          # visual aids
 ```
+
+### Arguments
+
+| Flag | Purpose | Example |
+|------|---------|---------|
+| `--path` | Workspace directory | `--path ~/learn/llm-inference` |
+| `--topic` | Start a new domain | `--topic "How attention works"` |
+| `--model` | Override model (Pi only) | `--model Qwen3.6-35B-A3B-Q8_0.gguf` |
+
+`--path` with existing content resumes. `--path` with `--topic` on an existing workspace
+stops and warns — prevents accidental overwrites.
 
 ## Model recommendations
 
