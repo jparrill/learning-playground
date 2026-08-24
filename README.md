@@ -44,23 +44,31 @@ pi install git:github.com/jparrill/learning-playground
 # Install as a plugin
 claude plugin install github.com/jparrill/learning-playground
 
-# Start learning (no additional setup needed)
+# Run setup (selects the Claude Code variant)
+/setup-learning-playground
+
+# Start learning
 /understand
 ```
 
 ### Manual installation
 
-Copy the `skills/` folder to your agent's skills directory:
+Copy the skills and select your variant:
 
 ```bash
 # Pi
 cp -r skills/* ~/.pi/agent/skills/
+cp skills/understand/variants/pi.md ~/.pi/agent/skills/understand/SKILL.md
 
 # Claude Code
 cp -r skills/* ~/.claude/skills/
+cp skills/understand/variants/claude.md ~/.claude/skills/understand/SKILL.md
 
 # Shared (both read from here)
 cp -r skills/* ~/.agents/skills/
+# Then copy the variant for your CLI:
+cp skills/understand/variants/pi.md ~/.agents/skills/understand/SKILL.md    # Pi
+cp skills/understand/variants/claude.md ~/.agents/skills/understand/SKILL.md # Claude Code
 ```
 
 ## Setup
