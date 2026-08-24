@@ -57,19 +57,23 @@ Copy the skills and select your variant:
 
 ```bash
 # Pi
-cp -r skills/* ~/.pi/agent/skills/
+mkdir -p ~/.pi/agent/skills/understand ~/.pi/agent/skills/setup-learning-playground
 cp skills/understand/variants/pi.md ~/.pi/agent/skills/understand/SKILL.md
+cp skills/understand/DOCTRINE.md skills/understand/PROBE.md skills/understand/PLAN.md skills/understand/TEACH.md skills/understand/FORMATS.md ~/.pi/agent/skills/understand/
+cp skills/setup-learning-playground/SKILL.md ~/.pi/agent/skills/setup-learning-playground/
 
 # Claude Code
-cp -r skills/* ~/.claude/skills/
+mkdir -p ~/.claude/skills/understand ~/.claude/skills/setup-learning-playground
 cp skills/understand/variants/claude.md ~/.claude/skills/understand/SKILL.md
+cp skills/understand/DOCTRINE.md skills/understand/PROBE.md skills/understand/PLAN.md skills/understand/TEACH.md skills/understand/FORMATS.md ~/.claude/skills/understand/
+cp skills/setup-learning-playground/SKILL.md ~/.claude/skills/setup-learning-playground/
 
-# Shared (both read from here)
-cp -r skills/* ~/.agents/skills/
-rm -rf ~/.agents/skills/understand/variants
-# Then copy the variant for your CLI:
+# Shared (both read from here — pick your variant)
+mkdir -p ~/.agents/skills/understand ~/.agents/skills/setup-learning-playground
 cp skills/understand/variants/pi.md ~/.agents/skills/understand/SKILL.md    # Pi
-cp skills/understand/variants/claude.md ~/.agents/skills/understand/SKILL.md # Claude Code
+# cp skills/understand/variants/claude.md ~/.agents/skills/understand/SKILL.md # Claude Code
+cp skills/understand/DOCTRINE.md skills/understand/PROBE.md skills/understand/PLAN.md skills/understand/TEACH.md skills/understand/FORMATS.md ~/.agents/skills/understand/
+cp skills/setup-learning-playground/SKILL.md ~/.agents/skills/setup-learning-playground/
 ```
 
 ## Setup
